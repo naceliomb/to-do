@@ -1,7 +1,7 @@
 const Express = require("express");
 const cors = require("cors");
 const todoRouter = require("./routes/todo");
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 const app = Express();
 

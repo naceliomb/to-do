@@ -1,11 +1,8 @@
 const crypto = require("crypto");
 
-
-const id = crypto.randomBytes(16).toString('hex');
-
 class Todo {
     constructor(title, description, dueDate){
-        this.id = id;
+        this.id = crypto.randomUUID();;
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;

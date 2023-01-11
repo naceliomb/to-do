@@ -1,12 +1,10 @@
 const Todo = require("../models/todo");
 
 
-let data = [];
+let database = new Map();
 
 exports.createTodo = async (req,res) =>{
-    const title = await req.body.todo.title;
-    const description = await req.body.todo.description;
-    const dueDate = await req.body.todo.dueDate;
+    const {title, description, dueDate } = req.body;
 
     if(!title || !description || !dueDate){
         return res.status(504).json({"message":"Dados não encontrados!"});
@@ -17,16 +15,16 @@ exports.createTodo = async (req,res) =>{
         return res.status(500).json({"message":"Ocorreu um erro ao tentar salvar sua tarefa"});
     }
 
-    data.push(todo);
+    database.set(todo.id, todo);
 
     return res.status(200).json({"message":"Tarefa criada com sucesso", "todo":todo.id});
 };
 
 
 exports.getAllTodos = async (req,res) => {
-    if(!data.length){
+    if(database.entries().next().done){
         return res.status(200).json({"message":"Não há tarefas cadastradas"});
     }
 
-    return res.status(200).json({"todos":data});
+    return res.status(200).json(Object.fromEntries(database));
 }

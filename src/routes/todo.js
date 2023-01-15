@@ -22,6 +22,25 @@ todoRouter.get("/getAll", async(req, res, next)=>{
 });
 
 
+todoRouter.get("/getById", async(req, res, next)=>{
+    try{
+        controllerTodo.getById(req,res);
+    }catch(err){
+        next(err);
+    }
+});
+
+
+
+todoRouter.delete("/deleteTodo", async(req, res, next)=>{
+    try{
+        controllerTodo.deleteTodo(req,res);
+    }catch(err){
+        next(err);
+    }
+});
+
+
 
 
 module.exports = todoRouter;

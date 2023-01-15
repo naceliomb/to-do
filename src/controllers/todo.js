@@ -28,3 +28,32 @@ exports.getAllTodos = async (req,res) => {
 
     return res.status(200).json(Object.fromEntries(database));
 }
+
+exports.getById = async (req,res) => {
+    if(database.entries().next().done){
+        return res.status(200).json({"message":"Não há tarefas cadastradas"});
+    }
+    const {id} = req.query;
+
+    const query = database.get(id);
+
+    if(!query){
+        return res.status(404).json({"message":"Tarefa não encontrada!"});
+    }
+
+    return res.status(200).json(query);
+}
+
+exports.deleteTodo = async (req,res) => {
+    if(database.entries().next().done){
+        return res.status(200).json({"message":"Não há tarefas cadastradas"});
+    }
+    const {id} = req.query;
+    const task = database.get(id);
+    const query = database.delete(id);
+    if(!query){
+        return res.status(404).json({"message":"Tarefa não encontrada"});
+    }
+    console.log(task);
+    return res.status(204);
+}

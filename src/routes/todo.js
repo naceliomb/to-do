@@ -40,6 +40,14 @@ todoRouter.delete("/deleteTodo", async(req, res, next)=>{
     }
 });
 
+todoRouter.put("/updateTodo", async(req, res, next)=>{
+    try{
+        controllerTodo.updateTodo(req,res);
+    }catch(err){
+        next(err);
+    }
+});
+
 
 
 

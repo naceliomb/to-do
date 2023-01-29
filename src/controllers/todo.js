@@ -27,7 +27,7 @@ exports.getAllTodos = async (req,res) => {
     }
 
     return res.status(200).json(Object.fromEntries(database));
-}
+};
 
 exports.getById = async (req,res) => {
     if(database.entries().next().done){
@@ -42,11 +42,11 @@ exports.getById = async (req,res) => {
     }
 
     return res.status(200).json(query);
-}
+};
 
 exports.deleteTodo = async (req,res) => {
     if(database.entries().next().done){
-        return res.status(200).json({"message":"Não há tarefas cadastradas"});
+        return res.status(204).json({"message":"Não há tarefas cadastradas"});
     }
     const {id} = req.query;
     const task = database.get(id);
@@ -56,4 +56,34 @@ exports.deleteTodo = async (req,res) => {
     }
     console.log(task);
     return res.status(204);
-}
+};
+
+exports.updateTodo = async (req,res) => {
+
+    if(database.entries().next().done){
+        return res.status(204).json({"message":"Não há tarefas cadastradas"});
+    }
+    
+    const {id} = req.query;
+
+    const {title, description, dueDate } = req.body;
+
+    
+
+    const task = database.get(id);
+
+    if(!task){
+        return res.status(204).json({"message":"Tarefa não encontrada"});
+    }
+    
+    const query = database.set(id, {"id": task.id, "title": title ? title : task.title, "description": description ? description : task.description, "dueDate": dueDate ? dueDate : task.dueDate});
+
+    if(!query){
+        return res.status(504).json({"message":"Não foi possível modificar a tarefa"});
+    }
+
+    const result = database.get(id);
+
+    return res.status(200).json(result);
+    
+};
